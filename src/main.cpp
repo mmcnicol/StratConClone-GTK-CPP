@@ -12,7 +12,11 @@
 #include "city_list.h"
 #include <stdlib.h>
 #include <math.h>
+#include <iostream>
 //#include <gnome.h>
+
+using namespace std;
+
 
 #define WIDTH UNIT_WIDTH*61
 #define HEIGHT UNIT_HEIGHT*61
@@ -23,6 +27,8 @@
 #define MAP_OFFSET_X 0
 #define MAP_OFFSET_Y 0
 
+#define DEBUG_ISLANDLISTID TRUE
+
 GtkWidget *makeLayout(void);
 void generateMap(GtkWidget *widget);
 
@@ -30,6 +36,8 @@ void initMap(void);
 void addIslands(void);
 void defineIslandAsRandomPoly(int intPlayerId, int X, int Y, int w, int h);
 
+
+GList* listNeighbour = NULL;
 void identify_unique_islands(void);
 void identify_cell_neighbours(gint, gint, gint);
 
@@ -95,9 +103,9 @@ int main(int argc,char *argv[])
 
 	generateMap(layout);
 
-	island_list_add(-1);
-	island_list_add(-2);
-	island_list_add(-3);
+	//island_list_add(-1);
+	//island_list_add(-2);
+	//island_list_add(-3);
 	island_list_print();
 
 	city_list_add(1, 1,1);
@@ -434,6 +442,31 @@ void drawMap(GtkWidget *widget) {
 	land_gc=gdk_gc_new(widget->window);
 	gdk_gc_set_rgb_fg_color (land_gc, &colourLand);
 
+        
+        #if DEBUG_ISLANDLISTID
+        char temp_string[5];
+        
+        GdkColor colourMarginBg;
+	//gdk_color_parse ("#EAEAEA", &colourMarginBg);
+	gdk_color_parse ("#404445", &colourMarginBg);
+
+	GdkColor colourMarginFg;
+	//gdk_color_parse ("#35AE29", &colourMarginFg);
+	gdk_color_parse ("#EAEAEA", &colourMarginFg);
+
+
+	GdkGC *MarginBg_gc;
+	MarginBg_gc=gdk_gc_new(widget->window);
+	gdk_gc_set_rgb_fg_color (MarginBg_gc, &colourMarginBg);
+
+	GdkGC *MarginFg_gc;
+	MarginFg_gc=gdk_gc_new(widget->window);
+	gdk_gc_set_rgb_fg_color (MarginFg_gc, &colourMarginFg);
+
+
+	GdkFont *font;
+	font = gdk_font_load ("-misc-fixed-medium-r-*-*-*-70-*-*-*-*-*-*");
+        #endif
 
 	//gint unit_count;
 	//unit_type unit;
@@ -454,7 +487,21 @@ void drawMap(GtkWidget *widget) {
 			} else */ if ( cell[x][y].isLand==TRUE ) {
 				gdk_draw_rectangle (widget->window, land_gc, 1, 
 					MAP_OFFSET_X+((x+1)*UNIT_WIDTH), MAP_OFFSET_Y+((y+1)*UNIT_HEIGHT), UNIT_WIDTH, UNIT_HEIGHT); 
-			} else {
+
+               
+                                
+                                #if DEBUG_ISLANDLISTID
+                                // to debug islandId...
+                                sprintf(temp_string, "%d", cell[x][y].islandId);
+
+                                // draw string
+                                gdk_draw_string(widget->window, font, MarginFg_gc, 
+                                        MAP_OFFSET_X+((x+1)*UNIT_WIDTH), 
+                                        MAP_OFFSET_Y+((y+1)*UNIT_HEIGHT)+UNIT_HEIGHT, 
+                                        temp_string);
+                                #endif
+                
+                        } else {
 				gdk_draw_rectangle (widget->window, sea_gc, 1, 
 					MAP_OFFSET_X+((x+1)*UNIT_WIDTH), MAP_OFFSET_Y+((y+1)*UNIT_HEIGHT), UNIT_WIDTH, UNIT_HEIGHT); 
 			}
@@ -471,7 +518,7 @@ void generateMap(GtkWidget *widget) {
 
 	addIslands();
 
-	//identify_unique_islands();
+	identify_unique_islands();
 }
 
 void initMap(void) {
@@ -483,6 +530,7 @@ void initMap(void) {
 
 			cell[x][y].isLand=FALSE;
 			cell[x][y].isFogOfWar=FALSE;
+                        cell[x][y].islandId=0;
 		}
 	}	
 }
@@ -598,33 +646,81 @@ void defineIslandAsRandomPoly(int intPlayerId, int X, int Y, int w, int h) {
  }
 
 
-/*
+class cGridCell {
+        int x, y;
+        public:
+                cGridCell (gint _x, gint _y) {
+                        x=_x;
+                        y=_y;
+                }
+                gint getX (void);
+                gint getY (void);
+};
+
+gint cGridCell::getX() { 
+    return x;
+}
+
+gint cGridCell::getY() { 
+    return y;
+}
+
+cGridCell *oGridCell = new cGridCell(0,0);
+
+
+
 void identify_unique_islands(void) {
 
 	gint x, y, islandListId=0;
+        GList *tmp;
 
-	for (y=1; y<=MAP_HEIGHT; y=y+1) {
-		for (x=1; x<=MAP_WIDTH; x=x+1) {
+	for (y=0; y<=MAP_HEIGHT; y=y+1) {
+		for (x=0; x<=MAP_WIDTH; x=x+1) {
 
-			if (cell[x][y].islandId==-1) {
+			if (cell[x][y].isLand==TRUE && cell[x][y].islandId==-1) {
 				cell[x][y].islandId=islandListId;
-				//UpdateGridIslandsDetail(x,y,iIslandListId);
-				identify_cell_neighbours(x, y, islandListId);
+                                //cout << "cell(" << x << "," << y << ") islandListId" << islandListId << endl;
+                                
+                                
+                                
+                                identify_cell_neighbours(x, y, islandListId);
 
-				while(listNeighbour.size()>0) {
+                                //cout << "g_list_length(listNeighbour)=" << g_list_length(listNeighbour) << endl;
+                                
+                                
+                                //gint tempCounter=10;
+				while(g_list_length(listNeighbour)>0) {
 
-					for (int i = 0; i < listNeighbour.size(); i++) { 
-						cGridCell oGridCell = (cGridCell) listNeighbour.get(i);
+                                    //tempCounter--;
+                                    //if(tempCounter==0) break;
+                                    //if(g_list_length(listNeighbour)==0) break;
+                                    
+                                    
+					for (int i = 0; i < g_list_length(listNeighbour); i++) { 
+						//cGridCell oGridCell = (cGridCell) listNeighbour.get(i);
+                                                //cGridCell tempGridCell = new cGridCell(g_list_nth(listNeighbour, i)->data->getX(), g_list_nth(listNeighbour, i)->data->getY());
+                                                tmp = g_list_nth(listNeighbour, i);
+                                                
 						//UpdateGridIslandsDetail(oGridCell.getX(),oGridCell.getY(),iIslandListId);
-						identify_cell_neighbours(oGridCell.getX(), oGridCell.getY(), islandListId);
-						listNeighbour.remove(i);
+						identify_cell_neighbours(((cGridCell *) tmp->data)->getX(), ((cGridCell *) tmp->data)->getY(), islandListId);
+						//listNeighbour.remove(i);
+                                                //listNeighbour = g_list_remove_all(listNeighbour, g_list_nth(listNeighbour, i));
+                                                listNeighbour = g_list_remove_link(listNeighbour, tmp);
+                                                listNeighbour = g_list_remove(listNeighbour, tmp);
+                                                //cout << i << " after remove... g_list_length(listNeighbour)=" << g_list_length(listNeighbour) << endl;
 					}   
-					
+				
+                                    //cout << "g_list_length(listNeighbour)=" << g_list_length(listNeighbour) << endl;
+                                
 				}
-
+                                //g_list_free(listNeighbour);
+                                
+ 
 				//oIslandList.AddIsland(-1); // add an island to IslandList which is not assigned to any player
 				island_list_add(-1); // add an island to IslandList which is not assigned to any player
-
+                                
+                                
+                                
 				islandListId=islandListId+1;
 			}
 		}
@@ -634,34 +730,65 @@ void identify_unique_islands(void) {
 
 void identify_cell_neighbours(gint x_, gint y_, gint iIslandListId_) {
 
-		if (x_-1>=1) 
-			if( intGridIslands[x_-1][y_]==-3 ) { intGridIslands[x_-1][y_]=iIslandListId_; listNeighbour.add( new cGridCell(x_-1, y_) );  }
+		if (x_-1>=0) 
+			if( cell[x_-1][y_].isLand==TRUE && cell[x_-1][y_].islandId==-1) { 
+                            cell[x_-1][y_].islandId=iIslandListId_; 
+                            //cout << "cell(" << x_-1 << "," << y_ << ") islandListId" << iIslandListId_ << endl;
+                            listNeighbour=g_list_insert(listNeighbour, new cGridCell(x_-1, y_) ,0);  
+                        }
 
-		if (x_+1<=countX) 
-			if( intGridIslands[x_+1][y_]==-3 ) { intGridIslands[x_+1][y_]=iIslandListId_; listNeighbour.add( new cGridCell(x_+1, y_) );  }
+		if (x_+1<=MAP_WIDTH) 
+			if( cell[x_+1][y_].isLand==TRUE && cell[x_+1][y_].islandId==-1) { 
+                            cell[x_+1][y_].islandId=iIslandListId_; 
+                            //cout << "cell(" << x_+1 << "," << y_ << ") islandListId" << iIslandListId_ << endl;
+                            listNeighbour=g_list_insert(listNeighbour, new cGridCell(x_+1, y_) ,0);  
+                        }
 		
 
-		if (y_-1>=1) 
-			if( intGridIslands[x_][y_-1]==-3 ) { intGridIslands[x_][y_-1]=iIslandListId_; listNeighbour.add( new cGridCell(x_, y_-1) );  }
+		if (y_-1>=0) 
+			if( cell[x_][y_-1].isLand==TRUE && cell[x_][y_-1].islandId==-1) { 
+                            cell[x_][y_-1].islandId=iIslandListId_; 
+                            //cout << "cell(" << x_ << "," << y_-1 << ") islandListId" << iIslandListId_ << endl;
+                            listNeighbour=g_list_insert(listNeighbour, new cGridCell(x_, y_-1) ,0);  
+                        }
 
-		if (y_+1<=countY) 
-			if( intGridIslands[x_][y_+1]==-3 ) { intGridIslands[x_][y_+1]=iIslandListId_; listNeighbour.add( new cGridCell(x_, y_+1) );  }
+		if (y_+1<=MAP_HEIGHT) 
+			if( cell[x_][y_+1].isLand==TRUE && cell[x_][y_+1].islandId==-1) { 
+                            cell[x_][y_+1].islandId=iIslandListId_; 
+                            //cout << "cell(" << x_ << "," << y_+1 << ") islandListId" << iIslandListId_ << endl;
+                            listNeighbour=g_list_insert(listNeighbour, new cGridCell(x_, y_+1) ,0);  
+                        }
 
 
 
-		if (x_-1>=1 && y_-1>=1) 
-			if( intGridIslands[x_-1][y_-1]==-3 ) { intGridIslands[x_-1][y_-1]=iIslandListId_; listNeighbour.add( new cGridCell(x_-1, y_-1) );  }
+		if (x_-1>=0 && y_-1>=0) 
+			if( cell[x_-1][y_-1].isLand==TRUE && cell[x_-1][y_-1].islandId==-1) { 
+                            cell[x_-1][y_-1].islandId=iIslandListId_;
+                            //cout << "cell(" << x_-1 << "," << y_-1 << ") islandListId" << iIslandListId_ << endl;
+                            listNeighbour=g_list_insert(listNeighbour, new cGridCell(x_-1, y_-1) ,0);  
+                        }
 
-		if (x_+1<=countX && y_+1<=countY) 
-			if( intGridIslands[x_+1][y_+1]==-3 ) { intGridIslands[x_+1][y_+1]=iIslandListId_; listNeighbour.add( new cGridCell(x_+1, y_+1) );  }
+		if (x_+1<=MAP_WIDTH && y_+1<=MAP_HEIGHT) 
+			if( cell[x_+1][y_+1].isLand==TRUE && cell[x_+1][y_+1].islandId==-1) { 
+                            cell[x_+1][y_+1].islandId=iIslandListId_; 
+                            //cout << "cell(" << x_+1 << "," << y_+1 << ") islandListId" << iIslandListId_ << endl;
+                            listNeighbour=g_list_insert(listNeighbour, new cGridCell(x_+1, y_+1) ,0);  
+                        }
 		
 
-		if (x_-1>=1 && y_+1<=countY) 
-			if( intGridIslands[x_-1][y_+1]==-3 ) { intGridIslands[x_-1][y_+1]=iIslandListId_; listNeighbour.add( new cGridCell(x_-1, y_+1) );  }
+		if (x_-1>=0 && y_+1<=MAP_HEIGHT) 
+			if( cell[x_-1][y_+1].isLand==TRUE && cell[x_-1][y_+1].islandId==-1) { 
+                            cell[x_-1][y_+1].islandId=iIslandListId_; 
+                            //cout << "cell(" << x_-1 << "," << y_+1 << ") islandListId" << iIslandListId_ << endl;
+                            listNeighbour=g_list_insert(listNeighbour, new cGridCell(x_-1, y_+1) ,0);  
+                        }
 
-		if (x_+1<=countX && y_-1>=1)
-			if( intGridIslands[x_+1][y_-1]==-3 ) { intGridIslands[x_+1][y_-1]=iIslandListId_; listNeighbour.add( new cGridCell(x_+1, y_-1) );  }
-
+		if (x_+1<=MAP_WIDTH && y_-1>=0)
+			if( cell[x_+1][y_-1].isLand==TRUE && cell[x_+1][y_-1].islandId==-1) { 
+                            cell[x_+1][y_-1].islandId=iIslandListId_; 
+                            //cout << "cell(" << x_+1 << "," << y_-1 << ") islandListId" << iIslandListId_ << endl;
+                            listNeighbour=g_list_insert(listNeighbour, new cGridCell(x_+1, y_-1) ,0);  
+                        }
+                
 }
 
-*/
