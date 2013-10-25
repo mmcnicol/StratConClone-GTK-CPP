@@ -35,10 +35,14 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/src/city.o \
 	${OBJECTDIR}/src/city_list.o \
+	${OBJECTDIR}/src/game_engine.o \
+	${OBJECTDIR}/src/grid.o \
 	${OBJECTDIR}/src/island_list.o \
 	${OBJECTDIR}/src/main.o \
-	${OBJECTDIR}/src/pieces.o
+	${OBJECTDIR}/src/pieces.o \
+	${OBJECTDIR}/src/unit_ref.o
 
 
 # C Compiler Flags
@@ -65,10 +69,25 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/stratconclone-gtk-cpp: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/stratconclone-gtk-cpp ${OBJECTFILES} ${LDLIBSOPTIONS}
 
+${OBJECTDIR}/src/city.o: src/city.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/city.o src/city.cpp
+
 ${OBJECTDIR}/src/city_list.o: src/city_list.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/city_list.o src/city_list.cpp
+
+${OBJECTDIR}/src/game_engine.o: src/game_engine.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/game_engine.o src/game_engine.cpp
+
+${OBJECTDIR}/src/grid.o: src/grid.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/grid.o src/grid.cpp
 
 ${OBJECTDIR}/src/island_list.o: src/island_list.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
@@ -84,6 +103,11 @@ ${OBJECTDIR}/src/pieces.o: src/pieces.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/pieces.o src/pieces.cpp
+
+${OBJECTDIR}/src/unit_ref.o: src/unit_ref.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/unit_ref.o src/unit_ref.cpp
 
 # Subprojects
 .build-subprojects:

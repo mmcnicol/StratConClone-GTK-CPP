@@ -18,8 +18,9 @@ struct city {
 	gint strength;
 };
 
-void city_list_add(gint, gint, gint);
+void city_list_add(gint, gint, gint, gint);
 void city_list_print();
+//gboolean isCity(gint x, gint y);
 
 //gboolean drawPiece(GtkWidget *widget, unit_type, player_type, gint, gint, gint);
 
