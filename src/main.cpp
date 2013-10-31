@@ -59,7 +59,18 @@ int main(int argc, char *argv[]) {
 
     //cUnitRef oUnitRef[9]; 
 
+//        cUnitRef::defineUnit(0, "Tank", 4, 2, 1, TRUE, TRUE, FALSE, 2, -1, FALSE);
+//        cUnitRef::defineUnit(1, "Fighter", 6, 1, 1, FALSE, TRUE, TRUE, 20, 20, TRUE);
+//
+//        cUnitRef::defineUnit(2, "Battleship", 20, 18, 4, FALSE, FALSE, TRUE, 3, -1, FALSE);
+//        cUnitRef::defineUnit(3, "Bomber", 25, 1, 1, FALSE, TRUE, TRUE, 10, 30, TRUE);
+//        cUnitRef::defineUnit(4, "Carrier", 10, 12, 1, FALSE, FALSE, TRUE, 3, -1, FALSE);
+//        cUnitRef::defineUnit(5, "Destroyer", 8, 3, 1, FALSE, FALSE, TRUE, 4, -1, FALSE);
+//        cUnitRef::defineUnit(6, "Transport", 8, 3, 1, FALSE, FALSE, TRUE, 3, -1, FALSE);
+//        cUnitRef::defineUnit(7, "Submarine", 8, 3, 1, FALSE, FALSE, TRUE, 3, -1, FALSE);
 
+//        cUnitRef::defineUnit(8, "Artillery", 4, 1, 4, TRUE, TRUE, FALSE, 1, -1, FALSE);
+//        cUnitRef::defineUnit(9, "Helicopter", 8, 1, 1, FALSE, TRUE, TRUE, 10, 10, TRUE);
 
     //setupUnitRefs();
 

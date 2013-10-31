@@ -9,6 +9,7 @@
 #include <iostream>
 #include <stdlib.h>     /* abs */
 #include "city.h"
+#include "unit_ref.h"
 #include "includes.h"
 
 using namespace std;
@@ -31,9 +32,10 @@ cCity::cCity(gint iCityPlayerId_, gint iCellX_, gint iCellY_, gint iCityIslandLi
     if( iCityPlayerId_ != -1 ) {
         //count << "is human or computer city so build a tank";
         // game rule: default initial production to Tank
-        iProductionUnitTypeId= oUnitRef[0].getUnitTypeId(); 
-        iProductionDaysLeft = oUnitRef[0].getDaysToProduce();
-        sProductionUnitTypeName = oUnitRef[0].getUnitName();
+        iProductionUnitTypeId= 0; 
+        //iProductionDaysLeft = cUnitRef::getDaysToProduce(0);
+        iProductionDaysLeft = 4;
+        //sProductionUnitTypeName = cUnitRef::getUnitName(0);
         //println("productionUnitTypeId=" + productionUnitTypeId + ", productionDaysLeft=" + productionDaysLeft);
 
         //oIslandList.updateIslandPlayerCityCount(getCityIslandListId(), -1, intCityPlayerId_);
@@ -43,7 +45,7 @@ cCity::cCity(gint iCityPlayerId_, gint iCellX_, gint iCellY_, gint iCityIslandLi
         // game rule: empty city does not produce anything
         iProductionUnitTypeId= -1; 
         iProductionDaysLeft = -1;
-        sProductionUnitTypeName = "N/A";
+        //sProductionUnitTypeName = "N/A";
         //println("productionUnitTypeId=" + productionUnitTypeId + ", productionDaysLeft=" + productionDaysLeft);
 
         //oIslandList.increaseUnoccupiedCityCount( getCityIslandListId() );

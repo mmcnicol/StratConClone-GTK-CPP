@@ -40,7 +40,7 @@ private:
     gint iCityIslandListId;
     gint iCellX, iCellY;
     gint iProductionUnitTypeId;
-    gchar* sProductionUnitTypeName;
+    //gchar* sProductionUnitTypeName;
     gint iProductionDaysLeft;
     gint iStrength;
 };
