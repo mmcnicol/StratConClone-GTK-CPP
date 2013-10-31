@@ -238,6 +238,8 @@ GtkWidget *makeLayout(void) {
 	//gdk_color_parse ("#35AE29", &colourMarginFg);
 	gdk_color_parse ("#EAEAEA", &colourMarginFg);
 
+        #endif
+
     vscroll = gtk_vscrollbar_new(vertAdj);
     hscroll = gtk_hscrollbar_new(horizAdj);
 

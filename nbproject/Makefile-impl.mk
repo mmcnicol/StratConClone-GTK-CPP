@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=SpaceInvadersClone-gtk-cpp
+PROJECTNAME=stratconclone-gtk-cpp
 
 # Active Configuration
 DEFAULTCONF=Debug
