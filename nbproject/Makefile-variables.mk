@@ -9,19 +9,19 @@ CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=GNU-Linux-x86
 CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-Linux-x86
-CND_ARTIFACT_NAME_Debug=stratconclone-gtk-cpp
-CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux-x86/stratconclone-gtk-cpp
+CND_ARTIFACT_NAME_Debug=spaceinvadersclone-gtk-cpp
+CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux-x86/spaceinvadersclone-gtk-cpp
 CND_PACKAGE_DIR_Debug=dist/Debug/GNU-Linux-x86/package
-CND_PACKAGE_NAME_Debug=stratconclone-gtk-cpp.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux-x86/package/stratconclone-gtk-cpp.tar
+CND_PACKAGE_NAME_Debug=spaceinvadersclone-gtk-cpp.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux-x86/package/spaceinvadersclone-gtk-cpp.tar
 # Release configuration
 CND_PLATFORM_Release=GNU-Linux-x86
 CND_ARTIFACT_DIR_Release=dist/Release/GNU-Linux-x86
-CND_ARTIFACT_NAME_Release=stratconclone-gtk-cpp
-CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux-x86/stratconclone-gtk-cpp
+CND_ARTIFACT_NAME_Release=spaceinvadersclone-gtk-cpp
+CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux-x86/spaceinvadersclone-gtk-cpp
 CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux-x86/package
-CND_PACKAGE_NAME_Release=stratconclone-gtk-cpp.tar
-CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux-x86/package/stratconclone-gtk-cpp.tar
+CND_PACKAGE_NAME_Release=spaceinvadersclone-gtk-cpp.tar
+CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux-x86/package/spaceinvadersclone-gtk-cpp.tar
 #
 # include compiler specific variables
 #

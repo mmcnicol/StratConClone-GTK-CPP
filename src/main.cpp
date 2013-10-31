@@ -36,6 +36,7 @@ gint eventDestroy(GtkWidget *widget,
 
 // global variables
 
+
 /*
 // Forward declare a type (to be a struct).
 typedef struct gamemap_type gamemap;
@@ -225,7 +226,17 @@ GtkWidget *makeLayout(void) {
 
     g_signal_connect(GTK_OBJECT(area), "event", GTK_SIGNAL_FUNC(eventDraw), NULL);
 
+        
+        #if DEBUG_ISLANDLISTID
+        char temp_string[5];
+        
+        GdkColor colourMarginBg;
+	//gdk_color_parse ("#EAEAEA", &colourMarginBg);
+	gdk_color_parse ("#404445", &colourMarginBg);
 
+	GdkColor colourMarginFg;
+	//gdk_color_parse ("#35AE29", &colourMarginFg);
+	gdk_color_parse ("#EAEAEA", &colourMarginFg);
 
     vscroll = gtk_vscrollbar_new(vertAdj);
     hscroll = gtk_hscrollbar_new(horizAdj);
